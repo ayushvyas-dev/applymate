@@ -17,7 +17,7 @@ import { useTheme } from 'next-themes';
 export default function DashboardNavbar() {
   const { theme, setTheme } = useTheme();
   return (
-    <nav className='z-10 sticky border-b '>
+    <nav className='z-10  top-0 border-b bg-background'>
       <div className='flex h-14 items-center justify-between   p-2'>
         <div>
           <Link href='/'>Logo</Link>

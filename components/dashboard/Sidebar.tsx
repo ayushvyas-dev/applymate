@@ -25,7 +25,7 @@ export default function AppSidebar() {
   return (
     <Sidebar
       variant='sidebar'
-      className='top-14 h-[calc(100svh-3.5rem)] mt-0.5  '
+      className='top-14 h-[calc(100svh-3.5rem)]   '
       collapsible='icon'
     >
       <SidebarHeader></SidebarHeader>

@@ -9,6 +9,8 @@ const jobSchema: Schema<Job> = new mongoose.Schema(
   {
     title: {
       type: String,
+      required: true,
+      trim: true,
     },
     company: {
       type: String,
@@ -30,9 +32,11 @@ const jobSchema: Schema<Job> = new mongoose.Schema(
     },
     location: {
       type: String,
+      trim: true,
     },
     description: {
       type: String,
+      trim: true,
     },
   },
   { timestamps: true },

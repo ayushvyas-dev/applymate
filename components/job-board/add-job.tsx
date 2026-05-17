@@ -1,5 +1,6 @@
 'use client';
 
+import CreateJob from '@/actions/jobs';
 import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
@@ -57,12 +58,18 @@ const formSchema = z.object({
   title: z
     .string()
     .min(5, 'Job title must be at least 2 characters.')
-    .max(32, 'Job title must be at most 20 characters.'),
-  company: z.string().min(2).max(30),
+    .max(32, 'Job title must be at most 20 characters.')
+    .trim(),
+  company: z.string().min(2).max(30).trim(),
+  url: z.string().min(2).max(30).trim(),
+  section: z.string().min(2).max(30),
+  salary: z.coerce.number().min(0).max(1000000),
+  location: z.string().min(2).max(30).trim(),
   description: z
     .string()
-    .min(50, 'Job description must be at least 20 characters.')
-    .max(500, 'Job description must be at most 100 characters.'),
+    .min(20, 'Job description must be at least 20 characters.')
+    .max(500, 'Job description must be at most 100 characters.')
+    .trim(),
 });
 
 export default function AddJob() {
@@ -70,10 +77,28 @@ export default function AddJob() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
+      company: '',
+      url: '',
+      section: 'saved',
+      salary: 10000,
+      location: '',
       description: '',
     },
   });
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    try {
+      const res = await CreateJob(data);
+      if (!res) {
+        toast.error('failed to create job');
+        return;
+      }
+      toast.success('Job created successfully');
+
+      form.reset();
+    } catch (error) {
+      console.error(error);
+      toast.error('something went wrong');
+    }
     toast('You submitted the following values:', {
       description: (
         <pre className='mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground'>
@@ -96,7 +121,8 @@ export default function AddJob() {
           <Button>Add Job</Button>
         </DialogTrigger>
         <DialogContent className='p-0'>
-          <Card className='w-full max-h-[90vh] flex flex-col sm:max-w-md'>
+          <DialogTitle className='sr-only' />
+          <Card className='w-full max-h-[90vh]  flex flex-col sm:max-w-md'>
             <CardHeader className='shrink-0'>
               <CardTitle>Add Job</CardTitle>
             </CardHeader>
@@ -113,7 +139,6 @@ export default function AddJob() {
                         </FieldLabel>
                         <Input
                           {...field}
-                          id='form-rhf-demo-title'
                           aria-invalid={fieldState.invalid}
                           placeholder='Job Title'
                           autoComplete='off'
@@ -125,7 +150,7 @@ export default function AddJob() {
                     )}
                   />
                   <Controller
-                    name='title'
+                    name='company'
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
@@ -134,7 +159,6 @@ export default function AddJob() {
                         </FieldLabel>
                         <Input
                           {...field}
-                          id='form-rhf-demo-title'
                           aria-invalid={fieldState.invalid}
                           placeholder='Company Name'
                           autoComplete='off'
@@ -146,7 +170,7 @@ export default function AddJob() {
                     )}
                   />
                   <Controller
-                    name='title'
+                    name='url'
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
@@ -155,7 +179,6 @@ export default function AddJob() {
                         </FieldLabel>
                         <Input
                           {...field}
-                          id='form-rhf-demo-title'
                           aria-invalid={fieldState.invalid}
                           placeholder='Job Url'
                           autoComplete='off'
@@ -167,7 +190,7 @@ export default function AddJob() {
                     )}
                   />
                   <Controller
-                    name='title'
+                    name='section'
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
@@ -194,7 +217,7 @@ export default function AddJob() {
                     )}
                   />
                   <Controller
-                    name='title'
+                    name='salary'
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
@@ -203,8 +226,9 @@ export default function AddJob() {
                         </FieldLabel>
                         <Input
                           {...field}
-                          id='form-rhf-demo-title'
                           aria-invalid={fieldState.invalid}
+                          type='number'
+                          value={field.value || ''}
                           placeholder='10000'
                           autoComplete='off'
                         />
@@ -215,7 +239,7 @@ export default function AddJob() {
                     )}
                   />
                   <Controller
-                    name='title'
+                    name='location'
                     control={form.control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
@@ -224,7 +248,6 @@ export default function AddJob() {
                         </FieldLabel>
                         <Input
                           {...field}
-                          id='form-rhf-demo-title'
                           aria-invalid={fieldState.invalid}
                           placeholder='Location'
                           autoComplete='off'
@@ -246,7 +269,6 @@ export default function AddJob() {
                         <InputGroup>
                           <InputGroupTextarea
                             {...field}
-                            id='form-rhf-demo-description'
                             placeholder='Paste or Type the Job Description.'
                             rows={6}
                             className='min-h-24 resize-none'

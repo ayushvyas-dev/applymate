@@ -12,12 +12,12 @@ export default async function DashboardLayout({
   const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <div className='min-h-screen w-full flex flex-col bg-background'>
-        <header className=' '>
+      <div className='h-screen w-full flex flex-col bg-background'>
+        <header className=' shrink-0'>
           <DashboardNavbar />
         </header>
 
-        <div className='flex flex-1 oveflow-hidden'>
+        <div className='flex flex-1 overflow-hidden'>
           <AppSidebar />
 
           <main className='flex-1 overflow-y-auto p-4 '>{children}</main>

@@ -1,13 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Job } from '@/types/job';
 
-export default function JobCard() {
+interface JobCardProps {
+  job: Job;
+}
+
+export default function JobCard({ job }: JobCardProps) {
   return (
-    <Card className='cursor-grab active:cursor-grabbing hover:border-primary/50 transition-colors'>
+    <Card className='cursor-grab active:cursor-grabbing hover:border-primary/50 transition-colors  my-4'>
       <CardHeader>
-        <CardTitle>JobTitle</CardTitle>
+        <CardTitle className=''>{job.title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p>JobCompany</p>
+        <p className=''>{job.company}</p>
       </CardContent>
     </Card>
   );

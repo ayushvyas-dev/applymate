@@ -1,14 +1,26 @@
 import JobCard from './job-card';
+import { Job } from '@/types/job';
 
-export default function BoardColumn() {
+interface BoardColumnProps {
+  title: string;
+  jobs: Job[];
+}
+
+export default function BoardColumn({ title, jobs }: BoardColumnProps) {
   return (
-    <div className='w-full sm:w-75 shrink-0 flex flex-col gap-3   bg-background'>
-      <div className='flex justify-between bg-gray-600'>
-        <h1>Category</h1>
-        <span>0 Jobs</span>
+    <div className='w-full min-h-98 sm:w-48 shrink-0 flex flex-col mx-2  rounded-xl border'>
+      <div className='border-b  px-2 py-1'>
+        <h1 className='text-center '>
+          {title}({jobs.length})
+        </h1>
       </div>
-
-      <JobCard></JobCard>
+      <div className='p-2'>
+        {jobs.length > 0 ? (
+          jobs.map((job) => <JobCard key={job._id} job={job} />)
+        ) : (
+          <p>No jobs to show</p>
+        )}
+      </div>
     </div>
   );
 }
