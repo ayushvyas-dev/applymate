@@ -1,11 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-const jobSchema = new mongoose.Schema(
+export interface Job extends Document {
+  title: string;
+  company: string;
+}
+
+const jobSchema: Schema<Job> = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
-      trim: true,
     },
     company: {
       type: String,
@@ -18,7 +21,7 @@ const jobSchema = new mongoose.Schema(
     },
     section: {
       type: String,
-      enum: ['saved', 'applied', 'interviewing', 'offer', 'rejected'],
+      enum: ['saved', 'applied', 'interviewing', 'offered', 'rejected'],
       default: 'saved',
       required: true,
     },
@@ -35,4 +38,5 @@ const jobSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.models.Job || mongoose.model('Job', jobSchema);
+export default (mongoose.models.Job as mongoose.Model<Job>) ||
+  mongoose.model<Job>('Job', jobSchema);

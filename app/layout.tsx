@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 
 import './globals.css';
-import Providers from './providers';
+import AuthProvider from '../components/providers/authproviders';
+import { Inter } from 'next/font/google';
+import { cn } from '@/lib/utils';
+import { ThemeProvider } from '../components/providers/themeprovider';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'AI JobTracker',
@@ -17,9 +22,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html
+      lang='en'
+      suppressHydrationWarning
+      className={cn('font-sans', inter.variable)}
+    >
       <body>
-        <Providers> {children}</Providers>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>{children} </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
