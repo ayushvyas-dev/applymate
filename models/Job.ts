@@ -23,7 +23,7 @@ const jobSchema: Schema<Job> = new mongoose.Schema(
     },
     section: {
       type: String,
-      enum: ['saved', 'applied', 'interviewing', 'offered', 'rejected'],
+      enum: ['saved', 'applied', 'interview', 'offered', 'rejected'],
       default: 'saved',
       required: true,
     },

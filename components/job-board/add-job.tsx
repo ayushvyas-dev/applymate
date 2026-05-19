@@ -53,6 +53,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from '../ui/input-group';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   title: z
@@ -85,6 +86,8 @@ export default function AddJob() {
       description: '',
     },
   });
+
+  const router = useRouter();
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       const res = await CreateJob(data);
@@ -95,6 +98,7 @@ export default function AddJob() {
       toast.success('Job created successfully');
 
       form.reset();
+      // router.refresh();
     } catch (error) {
       console.error(error);
       toast.error('something went wrong');
@@ -197,7 +201,10 @@ export default function AddJob() {
                         <FieldLabel htmlFor='form-rhf-demo-title'>
                           Section
                         </FieldLabel>
-                        <Select>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
                           <SelectTrigger className='w-45'>
                             <SelectValue placeholder='Saved' />
                           </SelectTrigger>

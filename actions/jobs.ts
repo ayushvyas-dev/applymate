@@ -2,6 +2,7 @@
 
 import { dbConnect } from '@/lib/db';
 import Job from '@/models/Job';
+import { revalidatePath } from 'next/cache';
 
 interface CreateJobInput {
   title: string;
@@ -17,6 +18,7 @@ export default async function CreateJob(data: CreateJobInput) {
   try {
     await dbConnect();
     const job = await Job.create({ ...data });
+    revalidatePath('/board');
     return {
       success: true,
       status: 201,
