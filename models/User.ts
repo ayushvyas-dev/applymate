@@ -7,11 +7,22 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      minLength: 3,
+      maxLength: 20,
+      match: /^[a-z0-9_-]+$/,
+    },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
     },
     image: {
       type: String,

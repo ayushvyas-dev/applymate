@@ -13,12 +13,20 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { ClipboardList, FileText, Home } from 'lucide-react';
+import {
+  ClipboardList,
+  FileText,
+  Home,
+  FilePenLine,
+  FileUser,
+} from 'lucide-react';
 
 const items = [
   { title: 'Home', url: '/dashboard', icon: Home },
   { title: 'Board', url: '/board', icon: ClipboardList },
   { title: 'Documents', url: '/documents', icon: FileText },
+  { title: 'Cover Letter', url: '/cover-letter', icon: FilePenLine },
+  { title: 'Resume Builder', url: '/resume-builder', icon: FileUser },
 ];
 
 export default function AppSidebar() {
@@ -45,7 +53,7 @@ export default function AppSidebar() {
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className='flex flex-row justify-end p-2'>
         <SidebarTrigger />
       </SidebarFooter>
     </Sidebar>

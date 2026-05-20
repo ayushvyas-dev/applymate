@@ -43,3 +43,9 @@ export async function GetJobs() {
     _id: job._id.toString(),
   }));
 }
+
+export async function GetJob() {}
+
+export async function UpdateJob() {}
+
+export async function DeleteJob() {}

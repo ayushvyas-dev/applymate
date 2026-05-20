@@ -1,6 +1,6 @@
 export default function DashboardPage() {
   return (
-    <div className=' flex-1 w-full h-full  border border-zinc-400 rounded-md'>
+    <div className=' flex-1 w-full h-full  border rounded-md'>
       This is dashboard
     </div>
   );
