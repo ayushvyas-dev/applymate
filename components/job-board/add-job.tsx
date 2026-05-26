@@ -1,6 +1,6 @@
 'use client';
 
-import CreateJob from '@/actions/jobs';
+import createJob from '@/actions/jobs';
 import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
@@ -64,7 +64,7 @@ const formSchema = z.object({
   company: z.string().min(2).max(30).trim(),
   url: z.string().min(2).max(30).trim(),
   section: z.string().min(2).max(30),
-  salary: z.coerce.number().min(0).max(1000000),
+  salary: z.number().min(0).max(1000000),
   location: z.string().min(2).max(30).trim(),
   description: z
     .string()
@@ -90,7 +90,7 @@ export default function AddJob() {
   const router = useRouter();
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-      const res = await CreateJob(data);
+      const res = await createJob(data);
       if (!res) {
         toast.error('failed to create job');
         return;
@@ -98,7 +98,7 @@ export default function AddJob() {
       toast.success('Job created successfully');
 
       form.reset();
-      // router.refresh();
+      router.refresh();
     } catch (error) {
       console.error(error);
       toast.error('something went wrong');
@@ -232,7 +232,9 @@ export default function AddJob() {
                           Salary
                         </FieldLabel>
                         <Input
-                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                           aria-invalid={fieldState.invalid}
                           type='number'
                           value={field.value || ''}

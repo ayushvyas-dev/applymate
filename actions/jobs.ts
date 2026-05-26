@@ -4,7 +4,7 @@ import { dbConnect } from '@/lib/db';
 import Job from '@/models/Job';
 import { revalidatePath } from 'next/cache';
 
-interface CreateJobInput {
+interface createJobInput {
   title: string;
   company: string;
   url: string;
@@ -13,8 +13,18 @@ interface CreateJobInput {
   location: string;
   description: string;
 }
+export interface JobItem {
+  _id: string;
+  title: string;
+  company: string;
+  section: 'saved' | 'applied' | 'interview' | 'offered' | 'rejected';
+  url: string;
+  salary: number;
+  location: string;
+  description: string;
+}
 
-export default async function CreateJob(data: CreateJobInput) {
+export default async function createJob(data: createJobInput) {
   try {
     await dbConnect();
     const job = await Job.create({ ...data });
@@ -34,18 +44,18 @@ export default async function CreateJob(data: CreateJobInput) {
   }
 }
 
-export async function GetJobs() {
+export async function getJobs(): Promise<JobItem[]> {
   await dbConnect();
   const jobs = await Job.find().lean();
 
   return jobs.map((job) => ({
     ...job,
     _id: job._id.toString(),
-  }));
+  })) as unknown as JobItem[];
 }
 
-export async function GetJob() {}
+export async function getJob() {}
 
-export async function UpdateJob() {}
+export async function updateJob() {}
 
-export async function DeleteJob() {}
+export async function deleteJob() {}

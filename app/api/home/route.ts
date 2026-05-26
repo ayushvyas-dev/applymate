@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Job from '@/models/Job';
 import { connectDB } from '@/lib/db';
-import { authOptions } from '@/lib/authOptions';
+import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 
 export async function POST(req: NextRequest) {

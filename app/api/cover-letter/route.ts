@@ -1,24 +1,17 @@
 import { groqModel } from '@/lib/ai/models';
-import { generateText } from 'ai';
+import { streamText } from 'ai';
 import { buildCoverLetterPrompt } from '@/lib/ai/prompts';
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    // const body = await req.json();
 
-    const result = await generateText({
+    const result = streamText({
       model: groqModel,
-      prompt: buildCoverLetterPrompt(body),
+      prompt: buildCoverLetterPrompt(),
     });
-    console.log(result.text);
-    console.log(result.output);
-    console.log(result.usage);
-    return Response.json({
-      success: true,
-      status: 201,
-      message: 'cover letter generated successfully',
-      result: result.text,
-    });
+
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error(error);
     return Response.json(

@@ -1,8 +1,8 @@
-import { GetJobs } from '@/actions/jobs';
+import { getJobs } from '@/actions/jobs';
 import BoardColumn from './board-column';
 
 export default async function JobBoard() {
-  const jobs = await GetJobs();
+  const jobs = await getJobs();
 
   const groupedJobs = {
     saved: jobs.filter((job) => job.section === 'saved'),
