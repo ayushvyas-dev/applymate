@@ -3,6 +3,9 @@ import AppSidebar from '@/components/dashboard/Sidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
 
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+
 export default async function DashboardLayout({
   children,
 }: {
@@ -10,11 +13,14 @@ export default async function DashboardLayout({
 }) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';
+
+  const session = await getServerSession(authOptions);
+  const avatar = session.user.image;
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <div className='h-screen w-full flex flex-col bg-background'>
         <header className=' shrink-0'>
-          <DashboardNavbar />
+          <DashboardNavbar avatar={avatar} />
         </header>
 
         <div className='flex flex-1 overflow-hidden'>

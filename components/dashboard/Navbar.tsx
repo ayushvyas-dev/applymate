@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTheme } from 'next-themes';
 
-export default function DashboardNavbar() {
+export default function DashboardNavbar({ avatar }) {
   const { theme, setTheme } = useTheme();
   return (
     <nav className='z-10  top-0 border-b bg-background'>
@@ -51,7 +51,7 @@ export default function DashboardNavbar() {
             <DropdownMenuTrigger asChild>
               <Button size={'icon-xs'} className='cursor-pointer'>
                 <Avatar>
-                  <AvatarImage src='https://lh3.googleusercontent.com/a/ACg8ocKt2S4GGimPgIp8ylq1x8sVWAtDj6TIp-3EFoajp6YJPTU1Xi4=s96-c' />
+                  <AvatarImage src={avatar} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </Button>
