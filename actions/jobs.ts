@@ -3,6 +3,8 @@
 import { dbConnect } from '@/lib/db';
 import Job from '@/models/Job';
 import { revalidatePath } from 'next/cache';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 interface createJobInput {
   title: string;
@@ -25,9 +27,10 @@ export interface JobItem {
 }
 
 export default async function createJob(data: createJobInput) {
+  const session = await getServerSession(authOptions);
   try {
     await dbConnect();
-    const job = await Job.create({ ...data });
+    const job = await Job.create({ ...data, user: session.user.id });
     revalidatePath('/board');
     return {
       success: true,

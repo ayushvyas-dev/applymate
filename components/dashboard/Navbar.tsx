@@ -51,7 +51,7 @@ export default function DashboardNavbar() {
             <DropdownMenuTrigger asChild>
               <Button size={'icon-xs'} className='cursor-pointer'>
                 <Avatar>
-                  <AvatarImage src='https://github.com/shadcn.png' />
+                  <AvatarImage src='https://lh3.googleusercontent.com/a/ACg8ocKt2S4GGimPgIp8ylq1x8sVWAtDj6TIp-3EFoajp6YJPTU1Xi4=s96-c' />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </Button>

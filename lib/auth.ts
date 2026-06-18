@@ -24,14 +24,20 @@ export const authOptions: NextAuthOptions = {
           const newUser = await User.create({
             name: user.name,
             email: user.email,
-            image: user.image ?? null,
+            avatar: user.image ?? null,
+            password: null,
+            provider: 'google',
           });
           console.log('New user created', newUser);
         } else {
           await User.findOneAndUpdate(
             { email: user.email },
-            { name: user.name, image: user.image ?? existingUser.image },
+            {
+              name: user.name,
+              avatar: user.image ?? existingUser.image,
+            },
           );
+          console.log(user);
         }
         return true;
       } catch (err) {
@@ -54,7 +60,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ baseUrl }) {
-      return baseUrl + '/home';
+      return baseUrl + '/dashboard';
     },
   },
   pages: {

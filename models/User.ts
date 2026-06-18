@@ -1,21 +1,22 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+export interface IUser extends Document {
+  name: string;
+  email: string;
+  password?: string;
+  avatar: string;
+  provider: 'credentials' | 'google';
+  emailVerified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       trim: true,
-      required: false,
-    },
-    username: {
-      type: String,
-      required: false,
-      unique: true,
-      lowercase: true,
-      trim: true,
-      minLength: 3,
-      maxLength: 20,
-      match: /^[a-z0-9_-]+$/,
+      required: true,
     },
     email: {
       type: String,
@@ -26,11 +27,19 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      default: null,
+      required: function (this: IUser) {
+        return this.provider === 'credentials';
+      },
       min: 8,
       trim: true,
     },
-    image: {
+    provider: {
+      type: String,
+      enum: ['credentials', 'google'],
+      required: true,
+    },
+    avatar: {
       type: String,
       default: null,
     },
