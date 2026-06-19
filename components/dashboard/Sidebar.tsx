@@ -26,7 +26,7 @@ const items = [
   { title: 'Board', url: '/board', icon: ClipboardList },
   { title: 'Documents', url: '/documents', icon: FileText },
   { title: 'Cover Letter', url: '/cover-letter', icon: FilePenLine },
-  { title: 'Resume Builder', url: '/resume-builder', icon: FileUser },
+  { title: 'Resume Matcher', url: '/resume-matcher', icon: FileUser },
 ];
 
 export default function AppSidebar() {

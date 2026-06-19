@@ -15,6 +15,7 @@ import {
 import { useTheme } from 'next-themes';
 
 export default function DashboardNavbar({ avatar }) {
+  console.log('Avatar URL received:', avatar);
   const { theme, setTheme } = useTheme();
   return (
     <nav className='z-10  top-0 border-b bg-background'>
@@ -51,7 +52,9 @@ export default function DashboardNavbar({ avatar }) {
             <DropdownMenuTrigger asChild>
               <Button size={'icon-xs'} className='cursor-pointer'>
                 <Avatar>
-                  <AvatarImage src={avatar} />
+                  <AvatarImage
+                    src={`https://images.weserv.nl/?url=${avatar}`}
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </Button>
