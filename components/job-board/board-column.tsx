@@ -8,7 +8,7 @@ interface BoardColumnProps {
 
 export default function BoardColumn({ title, jobs }: BoardColumnProps) {
   return (
-    <div className='w-full min-h-98 sm:w-48 shrink-0 flex flex-col mx-2  rounded-xl border'>
+    <div className='w-full min-h-98 sm:w-48 shrink-0 flex flex-col mx-1  rounded-xl border'>
       <div className='border-b  px-2 py-1'>
         <h1 className='text-center '>
           {title}({jobs.length})

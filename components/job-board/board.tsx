@@ -15,7 +15,7 @@ export default async function JobBoard() {
   return (
     <div className='flex   min-h-100   sm:overflow-x-auto pb-4'>
       {jobs ? (
-        <div className='flex '>
+        <div className='flex mx-3'>
           <BoardColumn title='Saved' jobs={groupedJobs.saved}></BoardColumn>
           <BoardColumn title='Applied' jobs={groupedJobs.applied}></BoardColumn>
           <BoardColumn

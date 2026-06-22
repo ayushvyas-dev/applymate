@@ -1,151 +1,28 @@
-'use client';
-
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
 import { useCompletion } from '@ai-sdk/react';
 import { getJobs } from '@/actions/jobs';
 
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Field, FieldLabel } from '@/components/ui/field';
+import { getUserResumes } from '@/actions/resume';
+import CoverLetterForm from '@/components/CoverLetterForm';
 
-export default function CoverLetterGenerator() {
-  // const { completion, complete, isLoading, error } = useCompletion({
-  //   api: '/api/cover-letter',
-  //   streamProtocol: 'text',
-  // });
+interface Job {
+  _id: string;
+  title: string;
+}
+interface Resume {
+  _id: string;
+  title: string;
+  fileName: string;
+}
 
-  // async function handleGenerate() {
-  //   await complete('');
-  // }
-
-  interface Job {
-    _id: string;
-    title: string;
-    company: string;
-    descriptiion: string;
-  }
-
-  const [selected, setSelected] = useState('');
-
-  const { data: jobs = [], isLoading } = useQuery({
-    queryKey: ['jobs'],
-    queryFn: () => getJobs(),
-  });
-
+export default async function CoverLetterGenerator() {
+  const jobs = await getJobs();
+  const resumes = await getUserResumes();
   // Combobox or select component for select job and select resume
 
   return (
     <div className=' flex-1 w-full h-full  border rounded-md'>
       <div className='flex h-full'>
-        <div className='w-[35%] h-full  flex flex-col p-4 border-r'>
-          <Field>
-            <FieldLabel>Select job</FieldLabel>
-            <Select>
-              <SelectTrigger className='w-[180px]'>
-                <SelectValue placeholder='Select job' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {jobs.map((job: Job) => (
-                    <SelectItem key={job._id} value={job.title}>
-                      {job.title}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-
-          <Field className='mt-2'>
-            <FieldLabel>Select resume</FieldLabel>
-            <Select>
-              <SelectTrigger className='w-[180px]'>
-                <SelectValue placeholder='Select resume' />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value='light'>Light</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </Field>
-
-          <Field className='mt-2'>
-            <FieldLabel>Choose Tone</FieldLabel>
-            <ToggleGroup
-              className=''
-              variant='outline'
-              type='single'
-              defaultValue='professional'
-            >
-              <ToggleGroupItem
-                className='cursor-pointer  '
-                value='professional'
-                aria-label='Toggle professional'
-              >
-                Professional
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                className='cursor-pointer  '
-                value='enthusiastic'
-                aria-label='Toggle enthusiastic'
-              >
-                Enthusiastic
-              </ToggleGroupItem>
-
-              <ToggleGroupItem
-                className='cursor-pointer '
-                value='confident'
-                aria-label='Toggle confident'
-              >
-                Confident
-              </ToggleGroupItem>
-            </ToggleGroup>
-          </Field>
-          <Field className='mt-2'>
-            <FieldLabel>Choose Length</FieldLabel>
-            <ToggleGroup variant='outline' type='single' defaultValue='short'>
-              <ToggleGroupItem
-                className='cursor-pointer'
-                value='short'
-                aria-label='Toggle short'
-              >
-                Short
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                className='cursor-pointer'
-                value='medium'
-                aria-label='Toggle medium'
-              >
-                Medium
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                className='cursor-pointer'
-                value='long'
-                aria-label='Toggle long'
-              >
-                Long
-              </ToggleGroupItem>
-            </ToggleGroup>
-          </Field>
-          <Field className='mt-2'>
-            <FieldLabel>Additional Instructions</FieldLabel>
-            <Textarea className='h-[140px]' />
-          </Field>
-
-          <Button className='cursor-pointer mt-4'>Generate</Button>
-        </div>
-
+        <CoverLetterForm jobs={jobs} resumes={resumes} />
         <div>
           <h1>Generated cover letter </h1>
           <div></div>

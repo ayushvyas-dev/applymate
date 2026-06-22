@@ -13,9 +13,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTheme } from 'next-themes';
+import { signOut } from 'next-auth/react';
 
 export default function DashboardNavbar({ avatar }) {
-  console.log('Avatar URL received:', avatar);
   const { theme, setTheme } = useTheme();
   return (
     <nav className='z-10  top-0 border-b bg-background'>
@@ -62,18 +62,29 @@ export default function DashboardNavbar({ avatar }) {
             <DropdownMenuContent sideOffset={10}>
               <DropdownMenuGroup>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuItem>
-                  <User />
-                  Profile
+                <DropdownMenuItem asChild>
+                  <Link href='/profile'>
+                    <User />
+                    Profile
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings />
-                  Settings
+                <DropdownMenuItem asChild>
+                  <Link href='/settings'>
+                    <Settings />
+                    Settings
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem variant='destructive'>
+                <DropdownMenuItem
+                  onClick={() =>
+                    signOut({
+                      callbackUrl: '/',
+                    })
+                  }
+                  variant='destructive'
+                >
                   <LogOut />
                   Logout
                 </DropdownMenuItem>
