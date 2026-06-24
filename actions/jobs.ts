@@ -30,7 +30,7 @@ export default async function createJob(data: createJobInput) {
   const session = await getServerSession(authOptions);
   try {
     await dbConnect();
-    const job = await Job.create({ ...data, user: session.user.id });
+    const job = await Job.create({ ...data, userId: session.user.id });
     revalidatePath('/board');
     return {
       success: true,
@@ -48,10 +48,20 @@ export default async function createJob(data: createJobInput) {
 }
 
 export async function getJobs(): Promise<JobItem[]> {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    throw new Error('Unauthorized');
+  }
   await dbConnect();
-  const jobs = await Job.find().lean();
+  console.log('DB connected');
+  const jobs = await Job.find({ userId: session.user.id })
+    .sort({ createdAt: -1 })
+    .lean();
+  const serializedJobs = JSON.parse(JSON.stringify(jobs));
 
-  return jobs.map((job) => ({
+  console.log('jobs serialized');
+
+  return serializedJobs.map((job) => ({
     ...job,
     _id: job._id.toString(),
   })) as unknown as JobItem[];

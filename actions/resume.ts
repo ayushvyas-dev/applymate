@@ -4,6 +4,14 @@ import Resume from '@/models/Resume';
 import { authOptions } from '@/lib/auth';
 import { dbConnect } from '@/lib/db';
 import { getServerSession } from 'next-auth';
+import { groqModel } from '@/lib/ai/models';
+import { resumeMatcherPrompt } from '@/lib/ai/prompts';
+import { generateText } from 'ai';
+
+interface ResumeMatcherInput {
+  description: string;
+  resumeText: string;
+}
 
 export async function getUserResumes() {
   const session = await getServerSession(authOptions);
@@ -14,9 +22,35 @@ export async function getUserResumes() {
   await dbConnect();
   console.log('DB connected');
 
-  return Resume.find({
-    userId: session.user.id,
-  })
+  const resumes = await Resume.find({ userId: session.user.id })
     .sort({ createdAt: -1 })
     .lean();
+
+  const serializedResumes = JSON.parse(JSON.stringify(resumes));
+
+  return serializedResumes.map((resume) => ({
+    ...resume,
+    _id: resume._id.toString(),
+  }));
+}
+
+export async function matchResume(data: ResumeMatcherInput) {
+  try {
+    const result = await generateText({
+      model: groqModel,
+      prompt: resumeMatcherPrompt(data),
+    });
+
+    return {
+      success: true,
+      data: JSON.parse(result.text),
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+      error: 'Failed to match resume',
+    };
+  }
 }

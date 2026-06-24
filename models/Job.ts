@@ -38,7 +38,7 @@ const jobSchema: Schema<Job> = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,

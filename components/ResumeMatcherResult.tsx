@@ -1,0 +1,82 @@
+'use client';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+type MatchResult = {
+  atsScore: number;
+  improvements: string[];
+  matches: string[];
+};
+
+interface ResumeMatcherResultProps {
+  result: MatchResult | null;
+  isLoading: boolean;
+}
+
+export default function ResumeMatcherResult({
+  result,
+  isLoading,
+}: ResumeMatcherResultProps) {
+  return (
+    <div className='  p-6'>
+      {isLoading && (
+        <div className='flex h-full items-center justify-center'>
+          <p className='text-muted-foreground'>Analyzing resume...</p>
+        </div>
+      )}
+
+      {!isLoading && !result && (
+        <div className='flex h-full items-center justify-center'>
+          <p className='text-muted-foreground'>
+            Select a job and resume to begin analysis.
+          </p>
+        </div>
+      )}
+
+      {!isLoading && result && (
+        <div className='space-y-6'>
+          {/* ATS Score */}
+          <Card>
+            <CardHeader>
+              <CardTitle>ATS Score</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <div className='text-5xl font-bold'>{result.atsScore}/100</div>
+            </CardContent>
+          </Card>
+
+          {/* Improvements */}
+          <Card>
+            <CardHeader>
+              <CardTitle>What Could Be Improved</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <ul className='list-disc space-y-2 pl-5'>
+                {result.improvements.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Matches */}
+          <Card>
+            <CardHeader>
+              <CardTitle>What Fits the Job Description</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <ul className='list-disc space-y-2 pl-5'>
+                {result.matches.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -4,15 +4,15 @@ import { getJobs } from '@/actions/jobs';
 import { getUserResumes } from '@/actions/resume';
 import CoverLetterForm from '@/components/CoverLetterForm';
 
-interface Job {
-  _id: string;
-  title: string;
-}
-interface Resume {
-  _id: string;
-  title: string;
-  fileName: string;
-}
+// interface Job {
+//   _id: string;
+//   title: string;
+// }
+// interface Resume {
+//   _id: string;
+//   title: string;
+//   fileName: string;
+// }
 
 export default async function CoverLetterGenerator() {
   const jobs = await getJobs();
@@ -23,7 +23,7 @@ export default async function CoverLetterGenerator() {
     <div className=' flex-1 w-full h-full  border rounded-md'>
       <div className='flex h-full'>
         <CoverLetterForm jobs={jobs} resumes={resumes} />
-        <div>
+        <div className='flex flex-row'>
           <h1>Generated cover letter </h1>
           <div></div>
         </div>
