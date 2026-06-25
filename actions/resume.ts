@@ -13,6 +13,26 @@ interface ResumeMatcherInput {
   resumeText: string;
 }
 
+export interface ResumeItem {
+  _id: string;
+
+  title: string;
+
+  fileUrl: string;
+
+  fileKey: string;
+
+  fileName: string;
+
+  fileSize: number;
+
+  pageCount: number;
+
+  resumeText: string;
+
+  isDefault: boolean;
+}
+
 export async function getUserResumes() {
   const session = await getServerSession(authOptions);
 
@@ -28,7 +48,7 @@ export async function getUserResumes() {
 
   const serializedResumes = JSON.parse(JSON.stringify(resumes));
 
-  return serializedResumes.map((resume) => ({
+  return serializedResumes.map((resume: ResumeItem) => ({
     ...resume,
     _id: resume._id.toString(),
   }));

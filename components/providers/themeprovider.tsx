@@ -6,7 +6,7 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes';
 // Suppresses the React 19 false-positive warning in development
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   const origError = console.error;
-  console.error = (...args: any[]) => {
+  console.error = (...args: Parameters<typeof console.error>) => {
     if (
       typeof args[0] === 'string' &&
       args[0].includes('Encountered a script tag')

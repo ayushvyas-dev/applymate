@@ -1,11 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface Job extends Document {
-  title: string;
-  company: string;
-}
-
-const jobSchema: Schema<Job> = new mongoose.Schema(
+const jobSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -47,5 +42,4 @@ const jobSchema: Schema<Job> = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default (mongoose.models.Job as mongoose.Model<Job>) ||
-  mongoose.model<Job>('Job', jobSchema);
+export default mongoose.models.Job || mongoose.model('Job', jobSchema);

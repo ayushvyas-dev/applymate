@@ -1,12 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-type MatchResult = {
-  atsScore: number;
-  improvements: string[];
-  matches: string[];
-};
+import { MatchResult } from './ResumeMatcherClient';
 
 interface ResumeMatcherResultProps {
   result: MatchResult | null;

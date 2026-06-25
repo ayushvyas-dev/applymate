@@ -4,20 +4,22 @@ import { useState } from 'react';
 
 import ResumeMatcherForm from './ResumeMatcherForm';
 import ResumeMatcherResult from './ResumeMatcherResult';
+import { JobItem } from '@/actions/jobs';
+import { ResumeItem } from '@/actions/resume';
 
-type MatchResult = {
+export interface MatchResult {
   atsScore: number;
   improvements: string[];
   matches: string[];
-};
+}
 
 interface ResumeMatcherClientProps {
-  jobs: Job[];
-  resumes: Resume[];
+  jobs: JobItem[];
+  resumes: ResumeItem[];
 }
 
 export default function ResumeMatcherClient({
-  jobs,
+  jobs: jobs,
   resumes,
 }: ResumeMatcherClientProps) {
   const [result, setResult] = useState<MatchResult | null>(null);

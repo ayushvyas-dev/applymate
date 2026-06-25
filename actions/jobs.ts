@@ -26,8 +26,20 @@ export interface JobItem {
   description: string;
 }
 
+interface JobDocument {
+  _id: string;
+  title: string;
+  company: string;
+  description: string;
+  salary: number;
+  location: string;
+}
+
 export default async function createJob(data: createJobInput) {
   const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    throw new Error('Unauthorized');
+  }
   try {
     await dbConnect();
     await Job.create({ ...data, userId: session.user.id });
@@ -61,7 +73,7 @@ export async function getJobs(): Promise<JobItem[]> {
 
   console.log('jobs serialized');
 
-  return serializedJobs.map((job) => ({
+  return serializedJobs.map((job: JobItem) => ({
     ...job,
     _id: job._id.toString(),
   })) as unknown as JobItem[];

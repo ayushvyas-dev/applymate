@@ -1,3 +1,4 @@
+import { ResumeItem } from '@/actions/resume';
 import {
   Card,
   CardHeader,
@@ -5,10 +6,9 @@ import {
   CardAction,
   CardContent,
   CardTitle,
-  CardFooter,
 } from '../ui/card';
 
-export default function ResumeCard({ resume }) {
+export default function ResumeCard({ resume }: { resume: ResumeItem }) {
   return (
     <div>
       <Card>

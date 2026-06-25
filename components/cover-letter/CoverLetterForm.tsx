@@ -13,8 +13,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Field, FieldLabel } from '@/components/ui/field';
-
-export default function CoverLetterForm({ jobs: jobs, resumes: resumes }) {
+import { JobItem } from '@/actions/jobs';
+import { ResumeItem } from '@/actions/resume';
+export default function CoverLetterForm({
+  jobs,
+  resumes,
+}: {
+  jobs: JobItem[];
+  resumes: ResumeItem[];
+}) {
   return (
     <div className='w-[35%] h-full  flex flex-col p-4 border-r'>
       <Field>
@@ -25,7 +32,7 @@ export default function CoverLetterForm({ jobs: jobs, resumes: resumes }) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {jobs.map((job: Job) => (
+              {jobs.map((job: JobItem) => (
                 <SelectItem key={job._id} value={job.title}>
                   {job.title}
                 </SelectItem>
@@ -43,7 +50,7 @@ export default function CoverLetterForm({ jobs: jobs, resumes: resumes }) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {resumes.map((resume: Resume) => (
+              {resumes.map((resume: ResumeItem) => (
                 <SelectItem key={resume._id} value={resume.title}>
                   {resume.title}
                 </SelectItem>

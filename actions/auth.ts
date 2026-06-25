@@ -16,7 +16,6 @@ import {
 interface CreateUserInput {
   email: string;
   password: string;
-  otp: string;
 }
 
 interface ActionResult {
@@ -67,10 +66,10 @@ export default async function createUser(data: CreateUserInput) {
       };
     }
 
-    const otpResult = checkOTP(normalized, data.otp);
-    if (!otpResult.success) {
-      return { success: false, status: 400, message: otpResult.message };
-    }
+    // const otpResult = checkOTP(normalized, data.otp);
+    // if (!otpResult.success) {
+    //   return { success: false, status: 400, message: otpResult.message };
+    // }
 
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(data.password, saltRounds);

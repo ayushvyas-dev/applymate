@@ -15,7 +15,7 @@ import {
 import { useTheme } from 'next-themes';
 import { signOut } from 'next-auth/react';
 
-export default function DashboardNavbar({ avatar }) {
+export default function DashboardNavbar({ avatar }: { avatar: string }) {
   const { theme, setTheme } = useTheme();
   return (
     <nav className='z-10  top-0 border-b bg-background'>

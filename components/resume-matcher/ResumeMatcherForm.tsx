@@ -1,10 +1,12 @@
 'use client';
 
+import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { matchResume } from '@/actions/resume';
+import { matchResume, ResumeItem } from '@/actions/resume';
+import { MatchResult } from './ResumeMatcherClient';
 
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -25,21 +27,31 @@ import {
   FieldError,
 } from '@/components/ui/field';
 import { Textarea } from '../ui/textarea';
+import { JobItem } from '@/actions/jobs';
 
 const formSchema = z.object({
+  title: z.string(),
   description: z.string().min(1, 'Description is required'),
   resumeId: z.string().min(1, 'Resume is required'),
 });
 
+interface ResumeMatcherFormProps {
+  jobs: JobItem[];
+  resumes: ResumeItem[];
+  setResult: Dispatch<SetStateAction<MatchResult | null>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+}
+
 export default function ResumeMatcherForm({
-  resumes: resumes,
-  jobs: jobs,
-  setResult: setResult,
-  setIsLoading: setIsLoading,
-}) {
+  jobs,
+  resumes,
+  setResult,
+  setIsLoading,
+}: ResumeMatcherFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: '',
       description: '',
       resumeId: '',
     },
@@ -56,11 +68,14 @@ export default function ResumeMatcherForm({
       const selectedResume = resumes.find(
         (resume) => resume._id === data.resumeId,
       );
-      const resumeText = selectedResume?.resumeText;
+      if (!selectedResume) {
+        toast.error('Please select a valid resume');
+        return;
+      }
 
       const response = await matchResume({
         description: data.description,
-        resumeText,
+        resumeText: selectedResume.resumeText,
       });
 
       if (response.success) {
@@ -93,7 +108,9 @@ export default function ResumeMatcherForm({
                   onValueChange={(value) => {
                     field.onChange(value);
 
-                    const selectedJob = jobs.find((job) => job.title === value);
+                    const selectedJob = jobs.find(
+                      (job: JobItem) => job.title === value,
+                    );
 
                     if (selectedJob) {
                       form.setValue('description', selectedJob.description);
@@ -105,7 +122,7 @@ export default function ResumeMatcherForm({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {jobs.map((job: Job) => (
+                      {jobs.map((job: JobItem) => (
                         <SelectItem key={job._id} value={job.title}>
                           {job.title}
                         </SelectItem>
@@ -161,7 +178,7 @@ export default function ResumeMatcherForm({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      {resumes.map((resume: Resume) => (
+                      {resumes.map((resume: ResumeItem) => (
                         <SelectItem key={resume._id} value={resume._id}>
                           {resume.title}
                         </SelectItem>

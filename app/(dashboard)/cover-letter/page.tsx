@@ -1,4 +1,4 @@
-import { useCompletion } from '@ai-sdk/react';
+// import { useCompletion } from '@ai-sdk/react';
 import { getJobs } from '@/actions/jobs';
 
 import { getUserResumes } from '@/actions/resume';

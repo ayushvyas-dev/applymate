@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   if (!session) {
     redirect('/');
   }
-  const avatar = session.user.image;
+  const avatar = session.user.image ?? '/default-avatar.png';
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>

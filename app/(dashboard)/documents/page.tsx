@@ -2,6 +2,25 @@ import { getUserResumes } from '@/actions/resume';
 import UploadFileButton from '@/components/documents/UploadFileButton';
 import ResumeCard from '@/components/documents/ResumeCard';
 
+interface ResumeItem {
+  _id: string;
+
+  title: string;
+
+  fileUrl: string;
+
+  fileKey: string;
+
+  fileName: string;
+
+  fileSize: number;
+
+  pageCount: number;
+
+  resumeText: string;
+
+  isDefault: boolean;
+}
 export default async function DocumentPage() {
   const resumes = await getUserResumes();
 
@@ -24,7 +43,7 @@ export default async function DocumentPage() {
       <section className='max-w-7xl     rounded-md p-2   transition'>
         <div className='flex  '>
           <div className='grid gap-6 md:grid-cols-2 xl:grid-cols-3'>
-            {resumes.map((resume) => (
+            {resumes.map((resume: ResumeItem) => (
               <ResumeCard
                 key={resume._id.toString()}
                 resume={JSON.parse(JSON.stringify(resume))}

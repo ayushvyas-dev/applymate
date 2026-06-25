@@ -1,25 +1,24 @@
-import { groqModel } from '@/lib/ai/models';
-import { streamText } from 'ai';
-import { buildCoverLetterPrompt } from '@/lib/ai/prompts';
+// import { groqModel } from '@/lib/ai/models';
+// import { streamText } from 'ai';
 
-export async function POST(req: Request) {
-  try {
-    // const body = await req.json();
+// export async function POST(req: Request) {
+//   try {
+//     // const body = await req.json();
 
-    const result = streamText({
-      model: groqModel,
-      prompt: buildCoverLetterPrompt(),
-    });
+//     const result = streamText({
+//       model: groqModel,
+//       prompt: buildCoverLetterPrompt(),
+//     });
 
-    return result.toTextStreamResponse();
-  } catch (error) {
-    console.error(error);
-    return Response.json(
-      { error: 'Cover letter generation failed' },
-      { status: 500 },
-    );
-  }
-}
+//     return result.toTextStreamResponse();
+//   } catch (error) {
+//     console.error(error);
+//     return Response.json(
+//       { error: 'Cover letter generation failed' },
+//       { status: 500 },
+//     );
+//   }
+// }
 
 // example for resume-matcher if streamed
 
@@ -42,3 +41,5 @@ export async function POST(req: Request) {
 //     return Response.json({ error: 'Resume match failed' }, { status: 500 });
 //   }
 // }
+
+export async function POST(req: Request) {}

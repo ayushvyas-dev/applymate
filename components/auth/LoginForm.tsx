@@ -4,6 +4,8 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import createUser from '@/actions/auth';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,7 +18,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+
 import Link from 'next/link';
 import { Field, FieldError, FieldGroup, FieldLabel } from '../ui/field';
 
