@@ -6,7 +6,7 @@ export default function BoardPage() {
     <div className=' flex-1 w-full h-fit   border  rounded-md'>
       <div className='flex  justify-between p-2 px-6'>
         <h1>Your Applications</h1>
-        <AddJob />
+        <AddJob className='cursor-pointer' />
       </div>
       <div className='  '>
         <JobBoard></JobBoard>

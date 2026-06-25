@@ -24,18 +24,18 @@ import {
   FieldLabel,
   FieldError,
 } from '@/components/ui/field';
-import { Textarea } from './ui/textarea';
+import { Textarea } from '../ui/textarea';
 
 const formSchema = z.object({
-  description: z.string(),
-  resumeId: z.string(),
+  description: z.string().min(1, 'Description is required'),
+  resumeId: z.string().min(1, 'Resume is required'),
 });
 
 export default function ResumeMatcherForm({
   resumes: resumes,
   jobs: jobs,
   setResult: setResult,
-  setLoading: setLoading,
+  setIsLoading: setIsLoading,
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,9 +46,13 @@ export default function ResumeMatcherForm({
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    if (!data.resumeId || !data.description) {
+      toast.error('Select Resume & Job');
+      return;
+    }
     try {
       // Find selected resume
-      setLoading(true);
+      setIsLoading(true);
       const selectedResume = resumes.find(
         (resume) => resume._id === data.resumeId,
       );
@@ -68,12 +72,12 @@ export default function ResumeMatcherForm({
       console.error(error);
       toast.error('something went wrong');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 
   return (
-    <div className='w-[35%] h-full  flex flex-col p-4 border-r'>
+    <div className='w-[35%] h-full  flex flex-col p-4 pr-8 border-r'>
       <form id='form-rhf-demo' onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
           <Controller
@@ -96,7 +100,7 @@ export default function ResumeMatcherForm({
                     }
                   }}
                 >
-                  <SelectTrigger className='w-[180px]'>
+                  <SelectTrigger className='w-45'>
                     <SelectValue placeholder='Select job' />
                   </SelectTrigger>
                   <SelectContent>
@@ -152,7 +156,7 @@ export default function ResumeMatcherForm({
                   Select resume
                 </FieldLabel>
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className='w-[180px]'>
+                  <SelectTrigger className='w-45'>
                     <SelectValue placeholder='Select resume' />
                   </SelectTrigger>
                   <SelectContent>
@@ -165,6 +169,9 @@ export default function ResumeMatcherForm({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />

@@ -21,7 +21,7 @@ export default function ResumeMatcherClient({
   resumes,
 }: ResumeMatcherClientProps) {
   const [result, setResult] = useState<MatchResult | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className='flex w-full h-full'>
@@ -29,10 +29,10 @@ export default function ResumeMatcherClient({
         jobs={jobs}
         resumes={resumes}
         setResult={setResult}
-        setLoading={setLoading}
+        setIsLoading={setIsLoading}
       />
 
-      <ResumeMatcherResult result={result} loading={loading} />
+      <ResumeMatcherResult result={result} isLoading={isLoading} />
     </div>
   );
 }

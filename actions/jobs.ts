@@ -30,7 +30,7 @@ export default async function createJob(data: createJobInput) {
   const session = await getServerSession(authOptions);
   try {
     await dbConnect();
-    const job = await Job.create({ ...data, userId: session.user.id });
+    await Job.create({ ...data, userId: session.user.id });
     revalidatePath('/board');
     return {
       success: true,

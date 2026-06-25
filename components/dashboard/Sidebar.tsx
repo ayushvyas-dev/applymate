@@ -4,9 +4,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -33,7 +31,7 @@ export default function AppSidebar() {
   return (
     <Sidebar
       variant='sidebar'
-      className='top-14 h-[calc(100svh-3.5rem)]   '
+      className='top-14  h-[calc(100svh-3.5rem)]   '
       collapsible='icon'
     >
       <SidebarHeader></SidebarHeader>

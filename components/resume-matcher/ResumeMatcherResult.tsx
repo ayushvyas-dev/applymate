@@ -18,7 +18,7 @@ export default function ResumeMatcherResult({
   isLoading,
 }: ResumeMatcherResultProps) {
   return (
-    <div className='  p-6'>
+    <div className='w-full  p-6'>
       {isLoading && (
         <div className='flex h-full items-center justify-center'>
           <p className='text-muted-foreground'>Analyzing resume...</p>
@@ -35,34 +35,24 @@ export default function ResumeMatcherResult({
 
       {!isLoading && result && (
         <div className='space-y-6'>
-          {/* ATS Score */}
           <Card>
             <CardHeader>
-              <CardTitle>ATS Score</CardTitle>
+              <CardTitle>Generated Result</CardTitle>
             </CardHeader>
 
             <CardContent>
+              <CardTitle>ATS Score</CardTitle>
               <div className='text-5xl font-bold'>{result.atsScore}/100</div>
             </CardContent>
-          </Card>
-
-          {/* Improvements */}
-          <Card>
-            <CardHeader>
-              <CardTitle>What Could Be Improved</CardTitle>
-            </CardHeader>
 
             <CardContent>
+              <CardTitle>What Could Be Improved</CardTitle>
               <ul className='list-disc space-y-2 pl-5'>
                 {result.improvements.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
               </ul>
             </CardContent>
-          </Card>
-
-          {/* Matches */}
-          <Card>
             <CardHeader>
               <CardTitle>What Fits the Job Description</CardTitle>
             </CardHeader>

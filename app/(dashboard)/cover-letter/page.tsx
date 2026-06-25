@@ -2,7 +2,7 @@ import { useCompletion } from '@ai-sdk/react';
 import { getJobs } from '@/actions/jobs';
 
 import { getUserResumes } from '@/actions/resume';
-import CoverLetterForm from '@/components/CoverLetterForm';
+import CoverLetterForm from '@/components/cover-letter/CoverLetterForm';
 
 // interface Job {
 //   _id: string;

@@ -6,7 +6,7 @@ import {
   CardContent,
   CardTitle,
   CardFooter,
-} from './ui/card';
+} from '../ui/card';
 
 export default function ResumeCard({ resume }) {
   return (
@@ -20,9 +20,6 @@ export default function ResumeCard({ resume }) {
         <CardContent>
           <p>Card Content</p>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
       </Card>
     </div>
   );

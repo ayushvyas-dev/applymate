@@ -1,6 +1,6 @@
 import { getJobs } from '@/actions/jobs';
 import { getUserResumes } from '@/actions/resume';
-import ResumeMatcherClient from '@/components/ResumeMatcherClient';
+import ResumeMatcherClient from '@/components/resume-matcher/ResumeMatcherClient';
 
 export default async function ResumeMatcherPage() {
   const jobs = await getJobs();
@@ -8,7 +8,7 @@ export default async function ResumeMatcherPage() {
 
   return (
     <div>
-      <div className='flex h-full'>
+      <div className='flex h-full border rounded-md'>
         <ResumeMatcherClient jobs={jobs} resumes={resumes} />
       </div>
     </div>

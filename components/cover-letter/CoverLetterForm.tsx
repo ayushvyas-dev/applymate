@@ -20,7 +20,7 @@ export default function CoverLetterForm({ jobs: jobs, resumes: resumes }) {
       <Field>
         <FieldLabel>Select job</FieldLabel>
         <Select>
-          <SelectTrigger className='w-[180px]'>
+          <SelectTrigger className='w-45'>
             <SelectValue placeholder='Select job' />
           </SelectTrigger>
           <SelectContent>
@@ -38,7 +38,7 @@ export default function CoverLetterForm({ jobs: jobs, resumes: resumes }) {
       <Field className='mt-2'>
         <FieldLabel>Select resume</FieldLabel>
         <Select>
-          <SelectTrigger className='w-[180px]'>
+          <SelectTrigger className='w-45'>
             <SelectValue placeholder='Select resume' />
           </SelectTrigger>
           <SelectContent>
@@ -113,7 +113,7 @@ export default function CoverLetterForm({ jobs: jobs, resumes: resumes }) {
       </Field>
       <Field className='mt-2'>
         <FieldLabel>Additional Instructions</FieldLabel>
-        <Textarea className='h-[140px]' />
+        <Textarea style={{ height: '150px' }} className='h-35' />
       </Field>
 
       <Button className='cursor-pointer mt-4'>Generate</Button>
