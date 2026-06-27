@@ -26,7 +26,7 @@ export default function ResumeMatcherClient({
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div className='flex w-full h-full'>
+    <div className='flex h-full'>
       <ResumeMatcherForm
         jobs={jobs}
         resumes={resumes}

@@ -13,7 +13,7 @@ export default function ResumeMatcherResult({
   isLoading,
 }: ResumeMatcherResultProps) {
   return (
-    <div className='w-full  p-6'>
+    <div className='flex flex-row h-full overflow-y-auto  p-4 pt-0'>
       {isLoading && (
         <div className='flex h-full items-center justify-center'>
           <p className='text-muted-foreground'>Analyzing resume...</p>
@@ -29,8 +29,8 @@ export default function ResumeMatcherResult({
       )}
 
       {!isLoading && result && (
-        <div className='space-y-6'>
-          <Card>
+        <div className='space-y-6 '>
+          <Card className=''>
             <CardHeader>
               <CardTitle>Generated Result</CardTitle>
             </CardHeader>

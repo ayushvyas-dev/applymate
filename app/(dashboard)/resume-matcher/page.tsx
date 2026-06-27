@@ -7,10 +7,8 @@ export default async function ResumeMatcherPage() {
   const resumes = await getUserResumes();
 
   return (
-    <div>
-      <div className='flex h-full border rounded-md'>
-        <ResumeMatcherClient jobs={jobs} resumes={resumes} />
-      </div>
+    <div className='flex-1 w-full h-full border rounded-md'>
+      <ResumeMatcherClient jobs={jobs} resumes={resumes} />
     </div>
   );
 }

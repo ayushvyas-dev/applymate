@@ -92,7 +92,7 @@ export default function ResumeMatcherForm({
   }
 
   return (
-    <div className='w-[35%] h-full  flex flex-col p-4 pr-8 border-r'>
+    <div className='w-[35%] h-full  flex flex-col p-4  border-r'>
       <form id='form-rhf-demo' onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
           <Controller

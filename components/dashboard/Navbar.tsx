@@ -1,5 +1,5 @@
 'use client';
-import { LogOut, Sun, Moon, Settings, User } from 'lucide-react';
+import { LogOut, Sun, Moon, Settings, User, Sparkles, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -18,59 +18,87 @@ import { signOut } from 'next-auth/react';
 export default function DashboardNavbar({ avatar }: { avatar: string }) {
   const { theme, setTheme } = useTheme();
   return (
-    <nav className='z-10  top-0 border-b bg-background'>
-      <div className='flex h-14 items-center justify-between   p-2'>
-        <div>
-          <Link href='/'>Logo</Link>
-        </div>
-        <div className='flex items-center gap-4'>
-          <Link href='/dashboard'>Dashboard</Link>
+    <nav className='sticky top-0 z-50 border-b bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60'>
+      <div className='mx-auto flex h-14 items-center justify-between px-6'>
+        {/* ─── Logo ─── */}
+        <Link href='/' className='flex items-center gap-2 group'>
+          <span className='inline-flex size-8 items-center justify-center rounded-lg bg-primary shadow-sm transition-transform group-hover:scale-105'>
+            <Sparkles className='size-4 text-primary-foreground' />
+          </span>
+          <span className='text-base font-bold tracking-tight'>
+            Apply
+            <span className='text-primary'>Mate</span>
+          </span>
+        </Link>
 
-          {/* Theme Menu */}
+        {/* ─── Right actions ─── */}
+        <div className='flex items-center gap-2'>
+          {/* Dashboard link */}
+          <Button variant='ghost' size='sm' asChild>
+            <Link href='/dashboard' className='gap-1.5'>
+              <LayoutDashboard className='size-4' />
+              <span className='hidden sm:inline'>Dashboard</span>
+            </Link>
+          </Button>
+
+          {/* Theme toggle */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='outline' size='icon'>
-                <Sun className='h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
-                <Moon className='absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
+              <Button variant='ghost' size='icon-sm'>
+                <Sun className='size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
+                <Moon className='absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
                 <span className='sr-only'>Toggle theme</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent sideOffset={10} align='end'>
               <DropdownMenuItem onClick={() => setTheme('light')}>
+                <Sun className='size-4' />
                 Light
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme('dark')}>
+                <Moon className='size-4' />
                 Dark
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setTheme('system')}>
+                <Settings className='size-4' />
                 System
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* User Menu */}
+
+          {/* User menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size={'icon-xs'} className='cursor-pointer'>
-                <Avatar>
+              <Button
+                variant='ghost'
+                size='icon-sm'
+                className='rounded-full p-0'
+              >
+                <Avatar className='size-7 ring-2 ring-border transition-shadow hover:ring-primary/50'>
                   <AvatarImage
                     src={`https://images.weserv.nl/?url=${avatar}`}
                   />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback className='bg-primary text-[10px] font-bold text-primary-foreground'>
+                    AM
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent sideOffset={10}>
+            <DropdownMenuContent sideOffset={10} align='end' className='w-48'>
+              <DropdownMenuLabel className='font-normal'>
+                <span className='text-sm font-semibold'>My Account</span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
                   <Link href='/profile'>
-                    <User />
+                    <User className='size-4' />
                     Profile
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href='/settings'>
-                    <Settings />
+                    <Settings className='size-4' />
                     Settings
                   </Link>
                 </DropdownMenuItem>
@@ -85,7 +113,7 @@ export default function DashboardNavbar({ avatar }: { avatar: string }) {
                   }
                   variant='destructive'
                 >
-                  <LogOut />
+                  <LogOut className='size-4' />
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuGroup>
