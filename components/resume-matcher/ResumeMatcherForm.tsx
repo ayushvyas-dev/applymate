@@ -75,7 +75,7 @@ export default function ResumeMatcherForm({
 
       const response = await matchResume({
         description: data.description,
-        resumeText: selectedResume.resumeText,
+        structuredResume: selectedResume.structuredResume,
       });
 
       if (response.success) {

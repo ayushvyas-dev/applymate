@@ -4,7 +4,9 @@ import { createUploadthing, type FileRouter } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { extractText, getDocumentProxy } from 'unpdf';
+
+import { createUserResume } from '@/actions/resume';
+import { extractResumeText } from '@/lib/extractResumeText';
 
 const f = createUploadthing();
 
@@ -33,46 +35,22 @@ export const ourFileRouter = {
       // This code RUNS ON YOUR SERVER after upload
       console.log('File uploaded to uploadthing');
 
-      await dbConnect();
-      console.log('Db connected');
-
-      // download pdf from uploadthing
-      const response = await fetch(file.ufsUrl);
-      const arrayBuffer = await response.arrayBuffer();
-
-      // load pdf
-      const document = await getDocumentProxy(new Uint8Array(arrayBuffer));
-
-      // convert pdf to text
-      const { text } = await extractText(document, {
-        mergePages: true,
-      });
-      const resumeText = text.replace(/\s+/g, ' ').trim();
-      console.log(resumeText);
-
       const existingResume = await Resume.countDocuments({
         userId: metadata.userId,
       });
 
-      await Resume.create({
-        userId: metadata.userId,
+      const extractedResume = await extractResumeText(file.ufsUrl)
 
-        title: file.name.replace('.pdf', ''),
+      const resumeText = extractedResume.resumeText;
+      console.log(resumeText);
+      const pageCount = extractedResume.pageCount;
 
-        fileName: file.name,
+      const isDefault = existingResume === 0;
+      console.log(metadata.userId)
 
-        fileUrl: file.ufsUrl,
-
-        fileKey: file.key,
-
-        fileSize: file.size,
-
-        pageCount: document.numPages,
-
-        resumeText,
-
-        isDefault: existingResume === 0,
-      });
+      await createUserResume({
+        userId: metadata.userId, file, resumeText, pageCount, isDefault
+      })
 
       console.log('Upload complete for userId:', metadata.userId);
 

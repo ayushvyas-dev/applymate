@@ -1,6 +1,7 @@
 'use client';
 
 import { ResumeItem } from '@/actions/resume';
+import { deleteUserResume } from '@/actions/resume';
 import {
   Card,
   CardHeader,
@@ -20,6 +21,13 @@ import {
   FileStack,
   HardDrive,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner'
+
+
+
+
+
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -28,6 +36,17 @@ function formatFileSize(bytes: number): string {
 }
 
 export default function ResumeCard({ resume }: { resume: ResumeItem }) {
+  const router = useRouter();
+  async function handleDelete(resumeId: string) {
+
+    try {
+      await deleteUserResume(resumeId);
+      toast.success("Resume deleted successfully!");
+      router.refresh();
+    } catch (error) {
+      toast.error("Failed to delete resume!");
+    }
+  }
   return (
     <Card className='group relative transition-shadow hover:shadow-lg'>
       <CardHeader>
@@ -101,6 +120,7 @@ export default function ResumeCard({ resume }: { resume: ResumeItem }) {
 
           {/* Delete */}
           <Button
+            onClick={() => handleDelete(resume._id.toString())}
             variant='ghost'
             size='sm'
             className='size-8 p-0 text-muted-foreground hover:text-destructive'

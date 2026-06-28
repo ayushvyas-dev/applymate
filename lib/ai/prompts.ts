@@ -1,40 +1,224 @@
-interface ResumeMatcherPromptProps {
-  resumeText: string;
-  description: string;
-}
 
-export function resumeMatcherPrompt(data: ResumeMatcherPromptProps) {
+
+export function resumeMatcherPrompt(
+  structuredResume: object,
+  description: string
+) {
   return `
-You are an expert ATS recruiter.
+You are a Senior Technical Recruiter and ATS Specialist with 15+ years of experience hiring software engineers, web developers, and technology professionals.
 
-Analyze the resume against the job description.
+Your job is to evaluate a candidate's resume against a job description exactly like a modern Applicant Tracking System (ATS).
 
+IMPORTANT RULES:
 
-Job Description:
-${data.description}
+1. You MUST strictly follow the scoring formula below.
+2. Never guess, assume, or hallucinate skills, experience, education, or qualifications.
+3. Only use information explicitly present in the resume.
+4. If information is missing, treat it as missing.
+5. Use deterministic reasoning so identical inputs always produce identical outputs.
+6. Keep all bullet points concise (maximum 1 sentence each).
+7. Return ONLY valid JSON.
+8. Do not wrap the JSON inside markdown.
+9. Round all scores to the nearest integer.
+10. If a denominator is 0, assign the full points for that section only if the JD does not specify any requirement. Otherwise assign 0.
 
-Resume:
-${data.resumeText}
+==================================================
+SCORING RUBRIC (100 POINTS TOTAL)
+==================================================
 
-Return ONLY valid JSON in this format:
+1. REQUIRED SKILLS MATCH (40 points)
 
-{
-  "atsScore": number,
-  "improvements": [
-    "string"
-  ],
-  "matches": [
-    "string"
-  ]
-}
+- Extract all REQUIRED technical skills from the job description.
+- Examples:
+  Required, Must Have, Mandatory, Essential, Need, Requirements.
+
+Formula:
+
+(required_skills_found / total_required_skills) × 40
 
 Rules:
-- atsScore must be an integer between 0 and 100.
-- improvements must contain 3-6 bullet points.
-- matches must contain 3-6 bullet points.
-- Return ONLY raw JSON.
-- Do not wrap the JSON in markdown fences.
+- Match exact skills and commonly accepted equivalents.
+- Example:
+  "React.js" matches "React"
+  "Node.js" matches "Node"
 
+2. PREFERRED SKILLS MATCH (15 points)
+
+- Extract all NICE TO HAVE or PREFERRED skills.
+
+Formula:
+
+(preferred_skills_found / total_preferred_skills) × 15
+
+Examples:
+Preferred, Plus, Nice to Have, Good to Have.
+
+3. EXPERIENCE MATCH (20 points)
+
+- Extract required years of experience from the JD.
+
+Rules:
+
+If resume experience >= required experience:
+20 points
+
+Else:
+(resume_years / required_years) × 20
+
+If JD does not specify experience:
+20 points
+
+Use only professional experience and internships.
+Do not count projects, certifications, or education.
+
+4. EDUCATION MATCH (10 points)
+
+Scoring:
+
+- Exact degree match = 10
+- Closely related degree = 7
+- No relevant degree = 0
+
+Examples:
+
+Computer Science ↔ Software Engineering = Related
+
+B.Tech CSE ↔ B.E CSE = Exact
+
+Mechanical Engineering for Software Role = Not Relevant
+
+If JD does not specify education:
+10 points
+
+5. KEYWORD COVERAGE (10 points)
+
+- Extract the TOP 20 ATS keywords from the job description.
+- Keywords may include:
+  technologies, frameworks, methodologies, tools, cloud platforms, soft skills, responsibilities.
+
+Formula:
+
+(keywords_found / 20) × 10
+
+6. RESUME QUALITY (5 points)
+
+Award:
+
+- Contact information present = +1
+- Experience section present = +1
+- Skills section present = +1
+- Education section present = +1
+- Projects section present = +1
+
+==================================================
+FINAL SCORE
+==================================================
+
+ATS Score =
+Required Skills +
+Preferred Skills +
+Experience +
+Education +
+Keyword Coverage +
+Resume Quality
+
+Round final score to nearest integer.
+
+==================================================
+CANDIDATE RESUME
+==================================================
+
+${JSON.stringify(structuredResume, null, 2)}
+
+==================================================
+JOB DESCRIPTION
+==================================================
+
+${description}
+
+==================================================
+RESPONSE FORMAT
+==================================================
+
+Return ONLY valid JSON in the following structure:
+
+{
+  "atsScore": 78,
+
+  "scoreBreakdown": {
+    "requiredSkills": {
+      "score": 28,
+      "maxScore": 40,
+      "requiredSkillsFound": 7,
+      "totalRequiredSkills": 10,
+      "matchedSkills": ["React", "Node.js", "MongoDB"]
+    },
+
+    "preferredSkills": {
+      "score": 10,
+      "maxScore": 15,
+      "preferredSkillsFound": 2,
+      "totalPreferredSkills": 3,
+      "matchedSkills": ["Docker", "AWS"]
+    },
+
+    "experience": {
+      "score": 16,
+      "maxScore": 20,
+      "requiredYears": 2,
+      "candidateYears": 1.6
+    },
+
+    "education": {
+      "score": 10,
+      "maxScore": 10,
+      "reason": "B.Tech in Computer Science exactly matches requirement."
+    },
+
+    "keywordCoverage": {
+      "score": 8,
+      "maxScore": 10,
+      "keywordsFound": 16,
+      "totalKeywords": 20,
+      "matchedKeywords": [
+        "REST API",
+        "Git",
+        "JavaScript"
+      ]
+    },
+
+    "resumeQuality": {
+      "score": 5,
+      "maxScore": 5,
+      "checks": {
+        "contactInfo": true,
+        "experienceSection": true,
+        "skillsSection": true,
+        "educationSection": true,
+        "projectsSection": true
+      }
+    }
+  },
+
+  "strengths": [
+    "Strong match in frontend technologies including React and JavaScript.",
+    "Projects demonstrate practical full-stack development experience.",
+    "Education aligns directly with the role requirements."
+  ],
+
+  "improvements": [
+    "Gain experience with AWS to strengthen cloud expertise.",
+    "Add more quantified achievements in experience descriptions.",
+    "Include additional testing-related technologies."
+  ],
+
+  "missingRequirements": [
+    "Docker experience not found.",
+    "No evidence of CI/CD exposure.",
+    "Required AWS experience is missing."
+  ]
+}
+}
 `;
 }
 
@@ -190,7 +374,11 @@ OUTPUT SCHEMA
     "portfolio": ""
   },
 
-  "skills": [],
+  "skills": [
+  {
+    "category": "",
+    "items":[]
+  }],
 
   "experience": [
     {
@@ -213,15 +401,18 @@ OUTPUT SCHEMA
       "fieldOfStudy": "",
       "startDate": "",
       "endDate": "",
-      "grade": ""
+      "cgpa": "",
+      "location":"",
     }
   ],
 
   "projects": [
     {
-      "title": "",
-      "description": "",
+      "name": "",
       "technologies": [],
+      "startDate": "",
+      "endDate": "",
+      "description": [],
       "githubUrl": "",
       "liveUrl": ""
     }
@@ -243,8 +434,17 @@ OUTPUT SCHEMA
   "customSections": {}
 }
 
+--------------------------------------------------
+RESUME TEXT
+--------------------------------------------------
 
-  `;
+${resumeText}
+
+--------------------------------------------------
+END OF RESUME TEXT
+--------------------------------------------------
+
+`;
 }
 
 export function coverLetterPrompt() {

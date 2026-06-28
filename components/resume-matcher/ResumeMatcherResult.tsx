@@ -41,7 +41,18 @@ export default function ResumeMatcherResult({
             </CardContent>
 
             <CardContent>
-              <CardTitle>What Could Be Improved</CardTitle>
+              <CardTitle>What is missing</CardTitle>
+              <ul className='list-disc space-y-2 pl-5'>
+                {result.missingRequirements.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </CardContent>
+            <CardHeader>
+              <CardTitle>What could be improved</CardTitle>
+            </CardHeader>
+
+            <CardContent>
               <ul className='list-disc space-y-2 pl-5'>
                 {result.improvements.map((item, index) => (
                   <li key={index}>{item}</li>
@@ -54,12 +65,13 @@ export default function ResumeMatcherResult({
 
             <CardContent>
               <ul className='list-disc space-y-2 pl-5'>
-                {result.matches.map((item, index) => (
+                {result.strengths.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
               </ul>
             </CardContent>
           </Card>
+
         </div>
       )}
     </div>

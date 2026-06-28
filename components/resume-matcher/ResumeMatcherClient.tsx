@@ -9,8 +9,11 @@ import { ResumeItem } from '@/actions/resume';
 
 export interface MatchResult {
   atsScore: number;
+  scoreBreakdown: object;
+  strengths: string[];
   improvements: string[];
-  matches: string[];
+  missingRequirements: string[];
+
 }
 
 interface ResumeMatcherClientProps {
