@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import {
   ArrowRight,
   Sparkles,
@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 
 /* ─── animation helpers ─── */
-const fade = {
+const fade: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number = 0) => ({
     opacity: 1,
@@ -39,7 +39,7 @@ const fade = {
   }),
 };
 
-const stagger = {
+const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
@@ -106,17 +106,20 @@ const steps = [
   {
     step: '01',
     title: 'Create Your Profile',
-    description: 'Sign up and upload your resume to get started in under a minute.',
+    description:
+      'Sign up and upload your resume to get started in under a minute.',
   },
   {
     step: '02',
     title: 'Discover & Match',
-    description: 'Browse jobs and let AI score how well your profile fits each role.',
+    description:
+      'Browse jobs and let AI score how well your profile fits each role.',
   },
   {
     step: '03',
     title: 'Apply Smarter',
-    description: 'Generate tailored cover letters and track every application effortlessly.',
+    description:
+      'Generate tailored cover letters and track every application effortlessly.',
   },
 ];
 
@@ -124,19 +127,22 @@ const testimonials = [
   {
     name: 'Priya Sharma',
     role: 'Software Engineer at Google',
-    quote: 'ApplyMate cut my job search time in half. The resume matcher alone is worth it.',
+    quote:
+      'ApplyMate cut my job search time in half. The resume matcher alone is worth it.',
     avatar: 'PS',
   },
   {
     name: 'Jake Reynolds',
     role: 'Product Designer at Stripe',
-    quote: "I went from scattered spreadsheets to a clean pipeline. It's a game-changer.",
+    quote:
+      "I went from scattered spreadsheets to a clean pipeline. It's a game-changer.",
     avatar: 'JR',
   },
   {
     name: 'Maria Chen',
     role: 'Data Analyst at Meta',
-    quote: 'The AI cover letters were shockingly good. I landed 3 interviews in one week.',
+    quote:
+      'The AI cover letters were shockingly good. I landed 3 interviews in one week.',
     avatar: 'MC',
   },
 ];
@@ -550,7 +556,9 @@ export default function Hero() {
       {/* ━━━ FOOTER ━━━ */}
       <footer className='border-t bg-muted/30 py-8'>
         <div className='mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-muted-foreground sm:flex-row'>
-          <span>&copy; {new Date().getFullYear()} ApplyMate. All rights reserved.</span>
+          <span>
+            &copy; {new Date().getFullYear()} ApplyMate. All rights reserved.
+          </span>
           <div className='flex gap-6'>
             <Link href='#' className='hover:text-foreground transition-colors'>
               Privacy
