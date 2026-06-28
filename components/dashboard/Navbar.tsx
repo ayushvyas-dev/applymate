@@ -1,5 +1,13 @@
 'use client';
-import { LogOut, Sun, Moon, Settings, User, Sparkles, LayoutDashboard } from 'lucide-react';
+import {
+  LogOut,
+  Sun,
+  Moon,
+  Settings,
+  User,
+  Sparkles,
+  LayoutDashboard,
+} from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -21,7 +29,7 @@ export default function DashboardNavbar({ avatar }: { avatar: string }) {
     <nav className='sticky top-0 z-50 border-b bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60'>
       <div className='mx-auto flex h-14 items-center justify-between px-6'>
         {/* ─── Logo ─── */}
-        <Link href='/' className='flex items-center gap-2 group'>
+        <Link href='/dashboard' className='flex items-center gap-2 group'>
           <span className='inline-flex size-8 items-center justify-center rounded-lg bg-primary shadow-sm transition-transform group-hover:scale-105'>
             <Sparkles className='size-4 text-primary-foreground' />
           </span>
