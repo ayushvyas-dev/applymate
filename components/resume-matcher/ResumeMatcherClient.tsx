@@ -13,7 +13,6 @@ export interface MatchResult {
   strengths: string[];
   improvements: string[];
   missingRequirements: string[];
-
 }
 
 interface ResumeMatcherClientProps {
@@ -29,7 +28,7 @@ export default function ResumeMatcherClient({
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div className='flex h-full'>
+    <div className='grid gap-6 lg:grid-cols-[380px_1fr]'>
       <ResumeMatcherForm
         jobs={jobs}
         resumes={resumes}
