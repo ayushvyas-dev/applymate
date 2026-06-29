@@ -7,6 +7,7 @@ import {
   User,
   Sparkles,
   LayoutDashboard,
+  Menu,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -20,24 +21,39 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useSidebar } from '@/components/ui/sidebar';
 import { useTheme } from 'next-themes';
 import { signOut } from 'next-auth/react';
 
 export default function DashboardNavbar({ avatar }: { avatar: string }) {
   const { theme, setTheme } = useTheme();
+  const { toggleSidebar } = useSidebar();
   return (
     <nav className='sticky top-0 z-50 border-b bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60'>
       <div className='mx-auto flex h-14 items-center justify-between px-6'>
-        {/* ─── Logo ─── */}
-        <Link href='/dashboard' className='flex items-center gap-2 group'>
-          <span className='inline-flex size-8 items-center justify-center rounded-lg bg-primary shadow-sm transition-transform group-hover:scale-105'>
-            <Sparkles className='size-4 text-primary-foreground' />
-          </span>
-          <span className='text-base font-bold tracking-tight'>
-            Apply
-            <span className='text-primary'>Mate</span>
-          </span>
-        </Link>
+        {/* ─── Left: hamburger + Logo ─── */}
+        <div className='flex items-center gap-2'>
+          {/* Mobile hamburger — visible only below md */}
+          <Button
+            variant='ghost'
+            size='icon-sm'
+            className='md:hidden'
+            onClick={toggleSidebar}
+            aria-label='Toggle menu'
+          >
+            <Menu className='size-5' />
+          </Button>
+
+          <Link href='/dashboard' className='flex items-center gap-2 group'>
+            <span className='inline-flex size-8 items-center justify-center rounded-lg bg-primary shadow-sm transition-transform group-hover:scale-105'>
+              <Sparkles className='size-4 text-primary-foreground' />
+            </span>
+            <span className='text-base font-bold tracking-tight'>
+              Apply
+              <span className='text-primary'>Mate</span>
+            </span>
+          </Link>
+        </div>
 
         {/* ─── Right actions ─── */}
         <div className='flex items-center gap-2'>

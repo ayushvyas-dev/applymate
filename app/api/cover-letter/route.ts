@@ -1,45 +1,87 @@
-// import { groqModel } from '@/lib/ai/models';
-// import { streamText } from 'ai';
+import { groqModel } from '@/lib/ai/models';
+import { coverLetterPrompt } from '@/lib/ai/prompts';
+import Job from '@/models/Job';
+import Resume from '@/models/Resume';
+import { streamText } from 'ai';
 
-// export async function POST(req: Request) {
-//   try {
-//     // const body = await req.json();
+export async function POST(req: Request) {
+    try {
+        const body = JSON.parse(await req.text());
+        console.log(body);
+        const data = JSON.parse(body.prompt);
+        console.log(data);
 
-//     const result = streamText({
-//       model: groqModel,
-//       prompt: buildCoverLetterPrompt(),
-//     });
+        const {
+            jobId,
+            resumeId,
+            tone,
+            length,
+            additionalInstructions,
+        } = data;
 
-//     return result.toTextStreamResponse();
-//   } catch (error) {
-//     console.error(error);
-//     return Response.json(
-//       { error: 'Cover letter generation failed' },
-//       { status: 500 },
-//     );
-//   }
-// }
+        // Basic validation
+        if (!jobId || !resumeId) {
+            return Response.json(
+                {
+                    error: 'Job and resume are required.',
+                },
+                { status: 400 }
+            );
+        }
 
-// example for resume-matcher if streamed
+        // Temperature based on tone
+        const temperatureMap = {
+            professional: 0.4,
+            confident: 0.55,
+            enthusiastic: 0.7,
+        } as const;
 
-// import { groqModel } from '@/lib/ai/models';
-// import { resumeMatcherPrompt } from '@/lib/ai/prompts';
-// import { streamText } from 'ai';
+        const temperature =
+            temperatureMap[
+            tone as keyof typeof temperatureMap
+            ] ?? 0.4;
 
-// export async function POST(req: Request) {
-//   try {
-//     const body = await req.json();
-//     const { title, description, resumeText } = body;
-//     const result = await streamText({
-//       model: groqModel,
-//       prompt: resumeMatcherPrompt({ title, description, resumeText }),
-//     });
+        // Token limits based on requested length
+        const maxTokensMap = {
+            short: 250,
+            medium: 450,
+            long: 650,
+        } as const;
 
-//     return result.toTextStreamResponse();
-//   } catch (error) {
-//     console.log(error);
-//     return Response.json({ error: 'Resume match failed' }, { status: 500 });
-//   }
-// }
+        const maxOutputTokens =
+            maxTokensMap[
+            length as keyof typeof maxTokensMap
+            ] ?? 450;
 
-export async function POST(req: Request) {}
+        const job = await Job.findById(jobId)
+            .select('description')
+            .lean();
+
+        const resume = await Resume.findById(resumeId)
+            .select('structuredResume')
+            .lean();
+        const prompt = coverLetterPrompt({
+
+            description: job.description,
+            structuredResume: resume.structuredResume,
+            tone,
+            length,
+            additionalInstructions
+        })
+        const result = streamText({
+            model: groqModel,
+            prompt,
+            temperature,
+            maxOutputTokens
+        });
+
+        return result.toTextStreamResponse();
+    } catch (error) {
+        console.error(error);
+        return Response.json(
+            { error: 'Cover letter generation failed' },
+            { status: 500 },
+        );
+    }
+}
+
