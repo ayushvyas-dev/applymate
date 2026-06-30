@@ -7,4 +7,7 @@ export interface Job {
   salary: number;
   location: string;
   description: string;
+  createdAt: Date;
+  updatedAt: Date;
+
 }

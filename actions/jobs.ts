@@ -24,16 +24,11 @@ export interface JobItem {
   salary: number;
   location: string;
   description: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-interface JobDocument {
-  _id: string;
-  title: string;
-  company: string;
-  description: string;
-  salary: number;
-  location: string;
-}
+
 
 export default async function createJob(data: createJobInput) {
   const session = await getServerSession(authOptions);
@@ -79,8 +74,47 @@ export async function getJobs(): Promise<JobItem[]> {
   })) as unknown as JobItem[];
 }
 
-export async function getJob() {}
+export async function getJob() { }
 
-export async function updateJob() {}
+export async function updateJob() { }
 
-export async function deleteJob() {}
+export async function deleteJob(jobId: string) {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.id) {
+    throw new Error('Unauthorized');
+  }
+
+  try {
+    await dbConnect();
+
+    const result = await Job.deleteOne({
+      _id: jobId,
+      userId: session.user.id,
+    });
+
+    if (result.deletedCount === 0) {
+      return {
+        success: false,
+        status: 404,
+        message: 'Job not found',
+      };
+    }
+
+
+
+    return {
+      success: true,
+      status: 200,
+      message: 'Job deleted successfully',
+    };
+  } catch (error) {
+    console.error('Error deleting job', error);
+
+    return {
+      success: false,
+      status: 500,
+      message: 'Failed to delete job',
+    };
+  }
+}

@@ -24,6 +24,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from '@/components/ui/card';
 import { Input } from '../ui/input';
 
@@ -43,6 +44,8 @@ import {
   InputGroupTextarea,
 } from '../ui/input-group';
 import { useRouter } from 'next/navigation';
+import { Plus, BriefcaseBusiness } from 'lucide-react';
+import { Separator } from '../ui/separator';
 
 const formSchema = z.object({
   title: z
@@ -108,16 +111,30 @@ export default function AddJob() {
     });
   }
   return (
-    <div className='  '>
+    <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button>Add Job</Button>
+          <Button className='gap-1.5'>
+            <Plus className='size-4' />
+            Add Job
+          </Button>
         </DialogTrigger>
-        <DialogContent className='p-0'>
+        <DialogContent className='p-0 border-0 shadow-2xl'>
           <DialogTitle className='sr-only' />
-          <Card className='w-full max-h-[90vh]  flex flex-col sm:max-w-md'>
-            <CardHeader className='shrink-0'>
-              <CardTitle>Add Job</CardTitle>
+          <Card className='w-full max-h-[90vh] flex flex-col sm:max-w-md shadow-lg'>
+            <CardHeader className='shrink-0 pb-2'>
+              <div className='flex items-center gap-3'>
+                <span className='inline-flex size-10 items-center justify-center rounded-xl bg-primary/10'>
+                  <BriefcaseBusiness className='size-5 text-primary' />
+                </span>
+                <div>
+                  <CardTitle className='text-lg'>Add Job</CardTitle>
+                  <CardDescription className='text-xs'>
+                    Fill in the details to track a new application
+                  </CardDescription>
+                </div>
+              </div>
+              <Separator className='mt-3' />
             </CardHeader>
             <CardContent className='flex-1 overflow-y-auto'>
               <form id='form-rhf-demo' onSubmit={form.handleSubmit(onSubmit)}>
@@ -288,7 +305,7 @@ export default function AddJob() {
                 </FieldGroup>
               </form>
             </CardContent>
-            <CardFooter className='shrink-0'>
+            <CardFooter className='shrink-0 border-t pt-4'>
               <Field orientation='horizontal'>
                 <Button
                   type='button'
